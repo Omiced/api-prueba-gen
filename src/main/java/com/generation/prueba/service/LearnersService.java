@@ -4,9 +4,11 @@ import com.generation.prueba.model.LearnersEntity;
 import com.generation.prueba.model.LessonsEntity;
 import com.generation.prueba.repository.LearnersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class LearnersService {
     private final LearnersRepository learnersRepository;
     @Autowired
@@ -19,7 +21,7 @@ public class LearnersService {
     }
 
     public List<LearnersEntity> getAllLearners(){
-        return this.learnersRepository.getAllWithLessons();
+        return this.learnersRepository.findAll();
     }
 
     public LearnersEntity getLearnerById(Long id){

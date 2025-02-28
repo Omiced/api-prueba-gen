@@ -1,7 +1,11 @@
 package com.generation.prueba.controller;
 
+import com.generation.prueba.dto.LearnersRequestDTO;
+import com.generation.prueba.dto.LessonRequestDTO;
 import com.generation.prueba.model.LearnersEntity;
+import com.generation.prueba.model.LessonsEntity;
 import com.generation.prueba.repository.LearnersRepository;
+import com.generation.prueba.repository.LessonsRepository;
 import com.generation.prueba.service.LearnersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +16,11 @@ import java.util.List;
 @RequestMapping(path = "/api/learners" ) //http://localhost:8080
 public class LearnersController {
     private final LearnersService learnersService;
+    private final LessonsRepository lessonsRepository;
     @Autowired
-    public LearnersController(LearnersService learnersService){
+    public LearnersController(LearnersService learnersService, LessonsRepository lessonsRepository){
         this.learnersService = learnersService;
+        this.lessonsRepository = lessonsRepository;
     }
 
     @GetMapping //http://localhost:8080/api/learners
@@ -33,8 +39,19 @@ public class LearnersController {
     }
 
     @PostMapping
-    public LearnersEntity updateLearner(@RequestBody LearnersEntity learner){
+    public LearnersEntity addLearner(@RequestBody LearnersRequestDTO learnersRequestDTO){
+        // Buscar los learners por sus IDs
+        List<LessonsEntity> lessons = lessonsRepository.findAllById(learnersRequestDTO.getLessonsIds());
+
+        // Crear la nueva lección y asignarle los learners encontrados
+        LearnersEntity learner = new LearnersEntity();
+        learner.setName(learnersRequestDTO.getName());
+        learner.setEmail(learnersRequestDTO.getEmail());
+        learner.setObservations((learnersRequestDTO.getObservations()));
+        learner.setLessons(lessons);
+        // Guardar en la BD
         return learnersService.addLearner(learner);
+
     }
 
     @PutMapping(path = "{learnerId}")

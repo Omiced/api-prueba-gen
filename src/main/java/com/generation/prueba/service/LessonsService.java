@@ -21,7 +21,7 @@ public class LessonsService {
     }
 
     public List<LessonsEntity> getAllLessons(){
-        return this.lessonsRepository.getAllWithLearners();
+        return this.lessonsRepository.findAll();
     }
 
     public LessonsEntity getLessonById(Long id){

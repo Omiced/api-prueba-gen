@@ -1,5 +1,8 @@
 package com.generation.prueba.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -8,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name="learners")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class LearnersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,13 +28,12 @@ public class LearnersEntity {
 
     /*creando una relacion y como queda muchos a muchos haciendo una
     tabla intermedia generada por JPA*/
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "learners_lessons",
-            joinColumns = @JoinColumn(name="learner_id"),
-            inverseJoinColumns = @JoinColumn(name="lesson_id")
+            joinColumns = @JoinColumn(name="FK_LEARNER"),
+            inverseJoinColumns = @JoinColumn(name="FK_LESSON")
     )
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<LessonsEntity> lessons;
 
     public LearnersEntity() {
