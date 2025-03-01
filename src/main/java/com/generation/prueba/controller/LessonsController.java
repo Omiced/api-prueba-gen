@@ -22,7 +22,8 @@ public class LessonsController {
     }
 
     @GetMapping //http://localhost:8080/api/lessons
-    public List<LessonsEntity> getAllLessons(){
+    public List<LessonsEntity> getAllLessons(@RequestParam(required = false) String description){
+        if(description != null) return this.lessonsService.getLessonByDescription(description);
         return this.lessonsService.getAllLessons();
     }
 

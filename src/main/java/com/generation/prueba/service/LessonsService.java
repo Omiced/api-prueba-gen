@@ -1,5 +1,6 @@
 package com.generation.prueba.service;
 
+import com.generation.prueba.model.LearnersEntity;
 import com.generation.prueba.model.LessonsEntity;
 import com.generation.prueba.repository.LessonsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class LessonsService {
         return this.lessonsRepository.getByIdWithLearners(id).orElseThrow(
                 () -> new IllegalArgumentException("La lección con id " + id + " no existe")
         );
+    }
+
+    public List<LessonsEntity> getLessonByDescription(String description){
+        return this.lessonsRepository.findByDescriptionContaining(description);
     }
 
     public LessonsEntity updateLesson(Long id, String description, String type){

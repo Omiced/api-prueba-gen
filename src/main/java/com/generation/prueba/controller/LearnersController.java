@@ -24,7 +24,8 @@ public class LearnersController {
     }
 
     @GetMapping //http://localhost:8080/api/learners
-    public List<LearnersEntity> getAllLearners(){
+    public List<LearnersEntity> getAllLearners(@RequestParam(required = false) String name){
+        if(name != null) return learnersService.getLearnerByname(name);
         return learnersService.getAllLearners();
     }
 
@@ -32,6 +33,8 @@ public class LearnersController {
     public LearnersEntity getLearner(@PathVariable("learnerId") Long id) {
         return learnersService.getLearnerById(id);
     }
+
+
 
     @DeleteMapping(path = "{learnerId}")
     public LearnersEntity deleteLearner(@PathVariable("learnerId" ) Long id){

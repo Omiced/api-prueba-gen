@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface LearnersRepository extends JpaRepository<LearnersEntity,Long> {
     @Query("SELECT l FROM LearnersEntity l JOIN FETCH l.lessons WHERE l.id = :id")
     Optional<LearnersEntity> findByIdWithLessons(@Param("id") Long id);
-    @Query("SELECT l FROM LearnersEntity l JOIN FETCH l.lessons")
-    List<LearnersEntity> getAllWithLessons();
+    @Query("SELECT l FROM LearnersEntity l WHERE l.name LIKE %:name%")
+    List<LearnersEntity> findByNameContaining(@Param("name") String name);
 
 }

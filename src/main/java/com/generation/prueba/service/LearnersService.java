@@ -24,6 +24,10 @@ public class LearnersService {
         return this.learnersRepository.findAll();
     }
 
+    public List<LearnersEntity> getLearnerByname(String name){
+        return this.learnersRepository.findByNameContaining(name);
+    }
+
     public LearnersEntity getLearnerById(Long id){
         return this.learnersRepository.findByIdWithLessons(id).orElseThrow(
         () -> new IllegalArgumentException("El learner con id " + id + " no existe"));
